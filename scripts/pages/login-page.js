@@ -1,5 +1,6 @@
 import DOMHandler from "../dom-handler.js";
 import { input } from "../components/input.js";
+import STORE from "../store.js";
 
 function render() {
   return `

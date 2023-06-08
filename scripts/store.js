@@ -1,6 +1,5 @@
 const STORE = {
-  setUser(data) {
-    this.user = data;
-  },
+  user: null,
+  todos: [],
 };
 export default STORE;
