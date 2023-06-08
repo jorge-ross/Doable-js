@@ -1,6 +1,10 @@
 import DOMHandler from "../dom-handler.js";
 import { input } from "../components/input.js";
 import STORE from "../store.js";
+import { login } from "../services/session-service.js";
+import { root } from "../config.js";
+import SignupPage from "./sign-up-page.js";
+import HomePage from "./home-page.js";
 
 function render() {
   return `
@@ -10,8 +14,8 @@ function render() {
         <h1 class="heading">Login</h1>
         <form action="" class="full-width container-sm flex flex-column gap-4 js-login-form">
           ${input({
-            label: "Username",
-            id: "username",
+            label: "Email",
+            id: "email",
             required: true,
             placeholder: "user@mail.com",
           })}
@@ -40,28 +44,20 @@ function render() {
 }
 
 function listenSubmit() {
-  // Encuentro el punto de referencia
   const form = document.querySelector(".js-login-form");
-
-  // Agrego oyentes de Eventos!
-  // Declaro el evento que quiero escuchar
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
 
-    // Opero los valores que capture del evento.
-    const { username, password } = event.target.elements;
+    const { email, password } = event.target;
 
     const credentials = {
-      username: username.value,
+      email: email.value,
       password: password.value,
     };
 
     try {
-      const { token, ...user } = await login(credentials);
-      sessionStorage.setItem(tokenKey, token);
-
-      STORE.setUser(user);
-      STORE.setCurrentPage("todos");
+      await login(credentials);
+      STORE.setCurrentPage("homepage");
 
       const todos = await getTodos();
       STORE.setTodos(todos);
@@ -75,12 +71,7 @@ function listenSubmit() {
 }
 
 function listenCreateAccount() {
-  // Capturar el punto de referencia
   const link = document.querySelector(".js-create-account");
-
-  // Agregar un escuchador de eventos
-  // Declarar que evento va a escuchar
-  // Efectuar cambios con los valores capturados del evento.
   link.addEventListener("click", (event) => {
     event.preventDefault();
 
