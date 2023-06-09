@@ -1,10 +1,41 @@
 import { fromLocalStorage, saveLocalStorage } from "./utils.js";
-import { getTodos } from "./services/todo-services.js";
+import { getTasks } from "./services/todo-services.js";
+
+async function listtasks() {
+  let currentPage = option || STORE.currentPage;
+  let tasks = await getTasks();
+  let newTask;
+
+  switch (currentPage) {
+    case "Important":
+      newTask = tasks.filter((task) => task.important === true);
+      STORE.setTasks(newTask);
+      break;
+
+    case "Incompleted":
+      newTask = tasks.filter((task) => task.completed === false);
+      STORE.setTasks(newTask);
+      break;
+
+    case "Important/completed":
+      newTask = tasks.filter((task) => task.completed === false);
+      let newTask2 = newTask.filter((task) => task.important === true);
+      STORE.setTasks(newTask2);
+      break;
+
+    case "Homepage":
+      STORE.setTasks(tasks);
+      break;
+
+    default:
+      break;
+  }
+}
 
 const STORE = {
   currentPage: fromLocalStorage("current-page") || "login",
   user: null,
-  todos: [],
+  tasks: [],
   setUser(data) {
     this.user = data;
   },
@@ -12,15 +43,16 @@ const STORE = {
     saveLocalStorage("current-page", page);
     this.currentPage = page;
   },
-  setTodos(todos) {
-    this.todos = todos;
-    saveLocalStorage("Todos", todos);
+  setTasks(tasks) {
+    this.tasks = tasks;
+    saveLocalStorage("tasks", tasks);
   },
-  addTodo(todo) {
-    this.todo.push(todo);
+  addtask(task) {
+    this.task.push(task);
   },
-  deleteTodo(id) {
-    this.todos = this.todos.filter((todo) => todo.id !== id);
+  deletetask(id) {
+    this.tasks = this.tasks.filter((task) => task.id !== id);
   },
+  listtasks,
 };
 export default STORE;

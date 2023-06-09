@@ -1,6 +1,6 @@
 import DOMHandler from "./dom-handler.js";
 import LoginPage from "./pages/login-page.js";
-import HomePage from "./pages/home-page.js";
+// import HomePage from "./pages/home-page.js";
 import { tokenKey, root, appKey } from "./config.js";
 import STORE from "./store.js";
 
@@ -11,10 +11,10 @@ async function App() {
 
     if (!token) throw new Error();
     module = HomePage;
-    await STORE.listTodos();
+    await STORE.listtasks();
   } catch (error) {
     sessionStorage.removeItem(tokenKey);
-    localStorage.removeItem("Todo");
+    localStorage.removeItem("Task");
     localStorage.removeItem(appKey);
     module = LoginPage;
   }

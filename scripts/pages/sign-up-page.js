@@ -1,7 +1,7 @@
 import DOMHandler from "../dom-handler.js";
 import LoginPage from "./login-page.js";
 import { root } from "../config.js";
-import HomePage from "./home-page.js";
+// import HomePage from "./home-page.js";
 import { input } from "../components/input.js";
 import STORE from "../store.js";
 
@@ -59,8 +59,8 @@ function listenSubmit() {
       await login(credentials);
       STORE.setCurrentPage("homepage");
 
-      const todos = await getTodos();
-      STORE.setTodos(todos);
+      const tasks = await getTasks();
+      STORE.settasks(tasks);
 
       DOMHandler.load(HomePage(), root);
     } catch (error) {
