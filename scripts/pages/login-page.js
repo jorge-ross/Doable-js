@@ -4,7 +4,8 @@ import STORE from "../store.js";
 import { login } from "../services/session-service.js";
 import { root } from "../config.js";
 import SignupPage from "./sign-up-page.js";
-// import HomePage from "./home-page.js";
+import HomePage from "./home-page.js";
+import { getTasks } from "../services/todo-services.js";
 
 function render() {
   return `
@@ -59,8 +60,8 @@ function listenSubmit() {
       await login(credentials);
       STORE.setCurrentPage("homepage");
 
-      const tasks = await getTasks();
-      STORE.settasks(tasks);
+      let tasks = await getTasks();
+      STORE.setTasks(tasks);
 
       DOMHandler.load(HomePage(), root);
     } catch (error) {

@@ -1,9 +1,11 @@
 import DOMHandler from "../dom-handler.js";
 import LoginPage from "./login-page.js";
 import { root } from "../config.js";
-// import HomePage from "./home-page.js";
+import HomePage from "./home-page.js";
 import { input } from "../components/input.js";
 import STORE from "../store.js";
+import { createUser } from "../services/user-services.js";
+import { getTasks } from "../services/todo-services.js";
 
 function render() {
   return `
@@ -56,11 +58,11 @@ function listenSubmit() {
     };
 
     try {
-      await login(credentials);
+      const token = await createUser(credentials);
       STORE.setCurrentPage("homepage");
 
       const tasks = await getTasks();
-      STORE.settasks(tasks);
+      STORE.setTasks(tasks);
 
       DOMHandler.load(HomePage(), root);
     } catch (error) {
