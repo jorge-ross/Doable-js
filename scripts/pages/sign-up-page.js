@@ -59,7 +59,7 @@ function listenSubmit() {
 
     try {
       const token = await createUser(credentials);
-      STORE.setCurrentPage("homepage");
+      STORE.setCurrentPage("Homepage");
 
       const tasks = await getTasks();
       STORE.setTasks(tasks);

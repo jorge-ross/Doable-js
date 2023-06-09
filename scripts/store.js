@@ -1,7 +1,7 @@
 import { fromLocalStorage, saveLocalStorage } from "./utils.js";
 import { getTasks } from "./services/todo-services.js";
 
-async function listtasks() {
+async function listTasks() {
   let currentPage = option || STORE.currentPage;
   let tasks = await getTasks();
   let newTask;
@@ -47,12 +47,12 @@ const STORE = {
     this.tasks = tasks;
     saveLocalStorage("tasks", tasks);
   },
-  addtask(task) {
+  addTask(task) {
     this.task.push(task);
   },
-  deletetask(id) {
+  deleteTask(id) {
     this.tasks = this.tasks.filter((task) => task.id !== id);
   },
-  listtasks,
+  listTasks,
 };
 export default STORE;

@@ -49,7 +49,7 @@ function listenSubmit() {
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
 
-    const { email, password } = event.target;
+    const { email, password } = event.target.elements;
 
     const credentials = {
       email: email.value,
@@ -58,7 +58,7 @@ function listenSubmit() {
 
     try {
       await login(credentials);
-      STORE.setCurrentPage("homepage");
+      STORE.setCurrentPage("Homepage");
 
       let tasks = await getTasks();
       STORE.setTasks(tasks);

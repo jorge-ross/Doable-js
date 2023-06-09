@@ -23,7 +23,7 @@
 
 /* Button Primary */
 .button--primary {
-  background-color: var(--primary-300);
+  background-color: var(--primary-500);
   color: white;
 }
 
