@@ -1,45 +1,25 @@
 import DOMHandler from "./dom-handler.js";
 import LoginPage from "./pages/login-page.js";
-import SignupPage from "./pages/sign-up-page.js";
 import HomePage from "./pages/home-page.js";
-import { tokenKey, root } from "./config.js";
+import { tokenKey, root, appKey } from "./config.js";
 import STORE from "./store.js";
 
-const router = {
-  login: LoginPage,
-  signup: SignupPage,
-  todo: HomePage,
-};
-
+let module;
 async function App() {
-  const token = sessionStorage.getItem(tokenKey);
-  let module;
-
-  if (!token) {
-    if (["login", "signup"].includes(STORE.currentPage)) {
-      module = router[STORE.currentPage];
-    } else {
-      module = LoginPage;
-    }
-
-    return DOMHandler.load(module(), root);
-  }
-
   try {
-    const { token, ...user } = await getUser();
-    STORE.setUser(user);
+    const token = sessionStorage.getItem(tokenKey);
 
-    const todos = await getTodos();
-    STORE.setTodos(todos);
-
-    module = router[STORE.currentPage];
+    if (!token) throw new Error();
+    module = HomePage;
+    await STORE.listTodos();
   } catch (error) {
-    console.log(error);
     sessionStorage.removeItem(tokenKey);
+    localStorage.removeItem("Todo");
+    localStorage.removeItem(appKey);
     module = LoginPage;
   }
 
-  return DOMHandler.load(module(), root);
+  DOMHandler.load(module(), root);
 }
 
 export default App;
