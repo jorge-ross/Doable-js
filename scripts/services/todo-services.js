@@ -11,3 +11,17 @@ export async function createTask(newTask = { title, due_date }) {
 export async function getTask(id) {
   return await apiFetch(`tasks/${id}`);
 }
+
+export async function deleteTask(id) {
+  return await apiFetch(`tasks/${id}`, { method: "DELETE" });
+}
+
+export async function editTask(
+  data = { title, due_date, important, completed },
+  id
+) {
+  return await apiFetch(`tasks/${id}`, {
+    method: "PATCH",
+    body: data,
+  });
+}

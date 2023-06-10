@@ -2,11 +2,11 @@ import { fromLocalStorage, saveLocalStorage } from "./utils.js";
 import { getTasks } from "./services/todo-services.js";
 
 async function listTasks() {
-  let currentPage = option || STORE.currentPage;
+  let currentpage = option || STORE.currentPage;
   let tasks = await getTasks();
   let newTask;
 
-  switch (currentPage) {
+  switch (currentpage) {
     case "Important":
       newTask = tasks.filter((task) => task.important === true);
       STORE.setTasks(newTask);
@@ -25,9 +25,6 @@ async function listTasks() {
 
     case "Homepage":
       STORE.setTasks(tasks);
-      break;
-
-    default:
       break;
   }
 }

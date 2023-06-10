@@ -130,13 +130,13 @@ function listenChecklist() {
     task.addEventListener("change", async (event) => {
       event.target.setAttribute("checked", "");
       const option = event.target.id;
-      let currentpage, newTask;
+      let newCurrentpage, newTask;
       if (task.checked) {
         switch (option) {
           case "Important":
             newTask = STORE.tasks.filter((task) => task.important === true);
             STORE.setTasks(newTask);
-            currentpage =
+            newCurrentpage =
               STORE.currentPage === "Incompleted"
                 ? "Important/completed"
                 : "Important";
@@ -145,7 +145,7 @@ function listenChecklist() {
           case "Incompleted":
             newTask = STORE.tasks.filter((task) => task.completed === false);
             STORE.setTasks(newTask);
-            currentpage =
+            newCurrentpage =
               STORE.currentPage === "Important"
                 ? "Important/completed"
                 : "Incompleted";
@@ -154,19 +154,19 @@ function listenChecklist() {
           default:
             break;
         }
-        STORE.setCurrentPage(currentpage);
+        STORE.setCurrentPage(newCurrentpage);
         DOMHandler.reload();
       } else {
         switch (option) {
           case "Important":
-            currentpage =
+            newCurrentpage =
               STORE.currentPage === "Important/completed"
                 ? "Incompleted"
                 : "Homepage";
             break;
 
           case "Incompleted":
-            currentpage =
+            newCurrentpage =
               STORE.currentPage === "Important/completed"
                 ? "Important"
                 : "Homepage";
@@ -175,7 +175,7 @@ function listenChecklist() {
           default:
             break;
         }
-        STORE.setCurrentPage(currentpage);
+        STORE.setCurrentPage(newCurrentpage);
         await STORE.listTasks();
         DOMHandler.reload();
       }

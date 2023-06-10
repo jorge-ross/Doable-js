@@ -6,6 +6,7 @@ export function input({
   type,
   required = false,
   value = false,
+  icon,
   error,
 }) {
   return `
@@ -16,6 +17,15 @@ export function input({
         : ""
     }
     <div class="input__container">
+    ${
+      icon
+        ? `<img
+        src="${icon}"
+        alt=""
+        class="input__icon"
+      />`
+        : ""
+    }
       <input
         type="${type ? type : "text"}"
         placeholder="${placeholder}"
