@@ -38,4 +38,5 @@ const renderHeader = () => {
     },
   };
 };
+
 export { renderHeader };

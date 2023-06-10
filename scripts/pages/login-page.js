@@ -13,12 +13,13 @@ function render() {
   ${renderHeader()}
     <section class="section-sm pad-sm">
       <div class="container flex flex-column gap-4 items-center">
-        <form action="" class="full-width container-sm flex flex-column gap-4 js-login-form">
+        <form action="" class="full-width container-sm flex flex-column gap-4 w-500 js-login-form">
           ${input({
             label: "Email",
             id: "email",
             required: true,
             placeholder: "user@mail.com",
+            error: this.state.errors.username,
           })}
           ${input({
             label: "Password",
@@ -26,6 +27,7 @@ function render() {
             required: true,
             type: "password",
             placeholder: "******",
+            error: this.state.errors.password,
           })}
           <button type="submit" class="button button--primary width-full">
             Login

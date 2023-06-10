@@ -6,18 +6,19 @@ import { input } from "../components/input.js";
 import STORE from "../store.js";
 import { createUser } from "../services/user-services.js";
 import { getTasks } from "../services/todo-services.js";
+import { renderHeader } from "../components/header.js";
 
 function render() {
   return `
-    <section class="section-lg">
-      <div class="container flex flex-column gap-8 items-center">
-        <img src="/assets/images/doable-logo.png" alt="rankable logo" />
-        <h1 class="heading">Create Account</h1>
-        <form action="" class="full-width container-sm flex flex-column gap-4 js-signup-form">
+  ${renderHeader()}
+    <section class="section-sm pad-sm">
+      <div class="container flex flex-column gap-4 items-center">
+        <form action="" class="full-width container-sm flex flex-column gap-4 w-500 js-signup-form">
           ${input({
             label: "Email",
             id: "email",
             required: true,
+            placeholder: "user@mail.com",
             error: this.state.errors.username,
           })}
           ${input({
@@ -28,7 +29,7 @@ function render() {
             required: true,
             error: this.state.errors.password,
           })}
-          <button type="submit" class="button button--secondary width-full">
+          <button type="submit" class="button button--primary width-full">
             Create Account
           </button>
         </form>
