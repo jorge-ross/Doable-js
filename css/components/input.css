@@ -21,6 +21,7 @@
   gap: 0.5em;
   background-color: white;
   width: 100%;
+
 }
 
 .select__input:hover {
@@ -92,6 +93,8 @@
   background-repeat: no-repeat;
   background-position-y: center;
   background-position-x: calc(100% - 8px);
+  font-size: 1rem;
+  line-height: 1.5rem;
 }
 
 .select--error .select__input {

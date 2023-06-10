@@ -35,8 +35,8 @@ function render() {
   <main class="section-sm flex flex-column">
     <div class="flex flex-column gap-4 ">
         <section class="flex flex-column gap-4">
-            <div class=" flex gap-4">
-                <p class="content-sm">Sort</p>
+            <div class=" flex gap-8">
+                <p class="content-sm w-500">Sort</p>
                 <select name="sort" id="sort" class="select select__input">
                 <option value="Option">Select Option</option>
                     <option value="Alphabetical">Alphabetical (a-z)</option>
@@ -44,9 +44,12 @@ function render() {
                     <option value="Importance">Importance</option>
                 </select>
             </div>
-            <div class="flex gap-4">
-                <p class="content-sm">Show</p>
-                <div class="flex gap-2">
+            <div class="flex">
+              <div class="show-flex">
+                <p class="content-sm w-500">Show</p>
+              </div>
+              <div class="flex-spi">
+              <div class="flex gap-2 w-500">
                 <input class="checkbox" type="checkbox" name="Incompleted" id="Incompleted" ${
                   STORE.currentPage === "Incompleted" ||
                   STORE.currentPage === "Important/completed"
@@ -55,18 +58,19 @@ function render() {
                 } >
                 <label>Only pending</label>
                 </div>  
-                <div class="flex gap-2">
-                <input class="checkbox checkbox__input checkbox" type="checkbox" name="Important" id="Important" ${
+                <div class="flex gap-2 w-500">
+                <input class="checkbox" type="checkbox" name="Important" id="Important" ${
                   STORE.currentPage === "Important" ||
                   STORE.currentPage === "Important/completed"
                     ? "checked"
                     : ""
                 } >
-                <label class="content-sm" for="Important">Only Important</label>
-                </div>      
+                <label class="content-sm w-500" for="Important">Only Important</label>
+                </div>  
+              </div>      
             </div>
         </section>
-        <section>
+        <section class="all-tasks">
           ${tasks.map(renderTask).join("")}
         </section>
     </div>
