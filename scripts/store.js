@@ -45,7 +45,7 @@ const STORE = {
     saveLocalStorage("tasks", tasks);
   },
   addTask(task) {
-    this.task.push(task);
+    this.tasks.push(task);
   },
   deleteTask(id) {
     this.tasks = this.tasks.filter((task) => task.id !== id);

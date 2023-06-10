@@ -1,13 +1,14 @@
 import STORE from "../store.js";
 import DOMHandler from "../dom-handler.js";
 import { input } from "../components/input.js";
+import { renderHeader } from "../components/header.js";
 import { createTask } from "../services/todo-services.js";
 
 function renderTask(task) {
   return `<div class="show-task flex gap-4 ${
     task.completed ? "checked" : ""
   }" id="task-${task.id}">
-  <input type="checkbox" name="task" id="${
+  <input type="checkbox" name="Task" id="${
     task.id
   }"class="checkbox checkbox__input check" ${task.completed ? "checked" : ""} >
   <div class="full-width">
@@ -30,6 +31,7 @@ function renderTask(task) {
 function render() {
   let tasks = STORE.tasks;
   return `
+  ${renderHeader()}
   <main class="section-sm flex flex-column">
     <div class="flex flex-column gap-4 ">
         <section class="flex flex-column gap-4">
@@ -37,7 +39,7 @@ function render() {
                 <p class="content-sm">Sort</p>
                 <select name="sort" id="sort" class="select select__input">
                 <option value="Option">Select Option</option>
-                    <option value="Alphabetical">Alphabetical(a-z)</option>
+                    <option value="Alphabetical">Alphabetical (a-z)</option>
                     <option value="Date">Due date</option>
                     <option value="Importance">Importance</option>
                 </select>
@@ -64,7 +66,7 @@ function render() {
                 </div>      
             </div>
         </section>
-        <section class="">
+        <section>
           ${tasks.map(renderTask).join("")}
         </section>
     </div>
@@ -84,25 +86,6 @@ function render() {
       <button class="button button--primary width-full">Add task</button>
     </form>
   </main>`;
-}
-
-function listenSubmit() {
-  const form = document.querySelector(".task-form ");
-  form.addEventListener("submit", async (event) => {
-    event.preventDefault();
-    const { title, due_date } = event.target.elements;
-    const taskData = {
-      title: title.value,
-      due_date: due_date.value,
-    };
-    try {
-      const newTask = await createTask(taskData);
-      STORE.addTask(newTask);
-      DOMHandler.reload();
-    } catch (error) {
-      console.log(error);
-    }
-  });
 }
 
 function listenCheck() {
@@ -254,6 +237,21 @@ function listenSort() {
   });
 }
 
+function listenSubmit() {
+  const form = document.querySelector(".task-form");
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const { title, due_date } = event.target;
+    const taskData = {
+      title: title.value,
+      due_date: due_date.value,
+    };
+    const newTask = await createTask(taskData);
+    STORE.addTask(newTask);
+    DOMHandler.reload();
+  });
+}
+
 function HomePage() {
   return {
     toString() {
@@ -265,6 +263,7 @@ function HomePage() {
       listenChecklist;
       listenImportant;
       listenSort;
+      renderHeader().addListeners();
     },
   };
 }

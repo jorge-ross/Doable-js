@@ -4,8 +4,12 @@ export async function getTasks() {
   return await apiFetch("tasks");
 }
 
-export async function createTask(newTask = { title, due_date }) {
-  return await apiFetch("tasks", { body: newTask });
+export async function createTask(data) {
+  const newTask = {
+    title: data.title,
+    due_date: data.due_date,
+  };
+  return await apiFetch("tasks", { method: "POST", body: newTask });
 }
 
 export async function getTask(id) {
