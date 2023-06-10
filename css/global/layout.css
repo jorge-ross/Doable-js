@@ -7,7 +7,11 @@
 }
 
 .section-sm {
-  padding: 32px;
+  padding: 1rem;
+}
+
+.pad-sm{
+  margin-top: 5rem;
 }
 
 .container {

@@ -70,9 +70,7 @@ body {
 
 .overline {
   font-size: 0.75rem;
-  line-height: 1rem;
-  letter-spacing: 0.125rem;
-  text-transform: uppercase;
+  line-height: 1.25rem;
 }
 
 a {

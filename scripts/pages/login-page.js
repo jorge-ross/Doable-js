@@ -6,13 +6,13 @@ import { root } from "../config.js";
 import SignupPage from "./sign-up-page.js";
 import HomePage from "./home-page.js";
 import { getTasks } from "../services/todo-services.js";
+import { renderHeader } from "../components/header.js";
 
 function render() {
   return `
-    <section class="section-lg">
-      <div class="container flex flex-column gap-8 items-center">
-        <img src="/assets/images/doable-logo.png" alt="doable logo" />
-        <h1 class="heading">Login</h1>
+  ${renderHeader()}
+    <section class="section-sm pad-sm">
+      <div class="container flex flex-column gap-4 items-center">
         <form action="" class="full-width container-sm flex flex-column gap-4 js-login-form">
           ${input({
             label: "Email",
@@ -27,7 +27,7 @@ function render() {
             type: "password",
             placeholder: "******",
           })}
-          <button type="submit" class="button button--secondary width-full">
+          <button type="submit" class="button button--primary width-full">
             Login
           </button>
         </form>
