@@ -2,7 +2,7 @@ import STORE from "../store.js";
 import DOMHandler from "../dom-handler.js";
 import { input } from "../components/input.js";
 import { renderHeader } from "../components/header.js";
-import { createTask } from "../services/todo-services.js";
+import { createTask, editTask } from "../services/todo-services.js";
 
 function renderTask(task) {
   return `<div class="show-task flex gap-4 ${
@@ -258,11 +258,11 @@ function HomePage() {
       return render();
     },
     addListeners() {
-      listenSubmit;
-      listenCheck;
-      listenChecklist;
-      listenImportant;
-      listenSort;
+      listenSubmit();
+      listenCheck();
+      listenChecklist();
+      listenImportant();
+      listenSort();
       renderHeader().addListeners();
     },
   };
