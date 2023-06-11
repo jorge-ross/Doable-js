@@ -2,10 +2,11 @@ import STORE from "../store.js";
 import DOMHandler from "../dom-handler.js";
 import { input } from "../components/input.js";
 import { renderHeader } from "../components/header.js";
-import { createTask, editTask } from "../services/todo-services.js";
+import { createTask, editTask, getTasks } from "../services/todo-services.js";
 
 function renderTask(task) {
-  return `<div class="show-task flex gap-4 ${
+  return `
+  <div class="show-task flex gap-4 ${
     task.completed ? "checked" : ""
   }" id="task-${task.id}">
   <div class="check-g">
@@ -55,18 +56,18 @@ function render() {
               </div>
               <div class="flex-spi">
               <div class="flex gap-2 w-500">
-                <input class="checkbox" type="checkbox" name="Incompleted" id="Incompleted" ${
+                <input class="checkbox checkbox__input checkbox--optionList" type="checkbox" name="Incompleted" id="Incompleted" ${
                   STORE.currentPage === "Incompleted" ||
-                  STORE.currentPage === "Important/completed"
+                  STORE.currentPage === "Important/Incompleted"
                     ? "checked"
                     : ""
                 } >
                 <label>Only pending</label>
                 </div>  
                 <div class="flex gap-2 w-500">
-                <input class="checkbox" type="checkbox" name="Important" id="Important" ${
+                <input class="checkbox checkbox__input checkbox--optionList" type="checkbox" name="Important" id="Important" ${
                   STORE.currentPage === "Important" ||
-                  STORE.currentPage === "Important/completed"
+                  STORE.currentPage === "Important/Incompleted"
                     ? "checked"
                     : ""
                 } >
@@ -90,7 +91,6 @@ function render() {
         id: "due_date",
         required: false,
         type: "date",
-        placeholder: "dd/mm/yy",
       })}
       <button class="button button--primary width-full">Add task</button>
     </form>
@@ -98,9 +98,9 @@ function render() {
 }
 
 function listenCheck() {
-  const listDos = document.querySelectorAll(".check");
+  const listChecked = document.querySelectorAll(".check");
 
-  listDos.forEach((task) => {
+  listChecked.forEach((task) => {
     task.addEventListener("change", async (event) => {
       const taskDone = event.target.closest(`#task-${task.id}`);
       if (!taskDone) return;
@@ -130,7 +130,7 @@ function listenChecklist() {
             STORE.setTasks(newTask);
             newCurrentpage =
               STORE.currentPage === "Incompleted"
-                ? "Important/completed"
+                ? "Important/Incompleted"
                 : "Important";
             break;
 
@@ -139,11 +139,8 @@ function listenChecklist() {
             STORE.setTasks(newTask);
             newCurrentpage =
               STORE.currentPage === "Important"
-                ? "Important/completed"
+                ? "Important/Incompleted"
                 : "Incompleted";
-            break;
-
-          default:
             break;
         }
         STORE.setCurrentPage(newCurrentpage);
@@ -152,14 +149,14 @@ function listenChecklist() {
         switch (option) {
           case "Important":
             newCurrentpage =
-              STORE.currentPage === "Important/completed"
+              STORE.currentPage === "Important/Incompleted"
                 ? "Incompleted"
                 : "Homepage";
             break;
 
           case "Incompleted":
             newCurrentpage =
-              STORE.currentPage === "Important/completed"
+              STORE.currentPage === "Important/Incompleted"
                 ? "Important"
                 : "Homepage";
             break;
@@ -171,28 +168,6 @@ function listenChecklist() {
         await STORE.listTasks();
         DOMHandler.reload();
       }
-    });
-  });
-}
-
-function listenImportant() {
-  const importanceIcon = document.querySelectorAll(".importance");
-
-  importanceIcon.forEach((icon) => {
-    icon.addEventListener("click", () => {
-      const task = STORE.tasks.find((task) => task.id == icon.id);
-      if (!task) return;
-
-      if (task.important) {
-        task.important = false;
-        editTask({ important: false }, task.id);
-      } else {
-        task.important = true;
-        editTask({ important: true }, task.id);
-      }
-      STORE.deleteTask(task.id);
-      STORE.addTask(task);
-      DOMHandler.reload();
     });
   });
 }
@@ -239,9 +214,6 @@ function listenSort() {
         STORE.setTasks(sortTask);
         DOMHandler.reload();
         break;
-
-      default:
-        break;
     }
   });
 }
@@ -258,6 +230,28 @@ function listenSubmit() {
     const newTask = await createTask(taskData);
     STORE.addTask(newTask);
     DOMHandler.reload();
+  });
+}
+
+function listenImportant() {
+  const importanceIcon = document.querySelectorAll(".importance");
+
+  importanceIcon.forEach((icon) => {
+    icon.addEventListener("click", () => {
+      const task = STORE.tasks.find((task) => task.id == icon.id);
+      if (!task) return;
+
+      if (task.important) {
+        task.important = false;
+        editTask({ important: false }, task.id);
+      } else {
+        task.important = true;
+        editTask({ important: true }, task.id);
+      }
+      STORE.deleteTask(task.id);
+      STORE.addTask(task);
+      DOMHandler.reload();
+    });
   });
 }
 

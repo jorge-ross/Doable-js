@@ -1,7 +1,7 @@
 import { fromLocalStorage, saveLocalStorage } from "./utils.js";
 import { getTasks } from "./services/todo-services.js";
 
-async function listTasks() {
+async function listTasks(option = null) {
   let currentpage = option || STORE.currentPage;
   let tasks = await getTasks();
   let newTask;
@@ -17,7 +17,7 @@ async function listTasks() {
       STORE.setTasks(newTask);
       break;
 
-    case "Important/completed":
+    case "Important/Incompleted":
       newTask = tasks.filter((task) => task.completed === false);
       let newTask2 = newTask.filter((task) => task.important === true);
       STORE.setTasks(newTask2);
@@ -42,7 +42,7 @@ const STORE = {
   },
   setTasks(tasks) {
     this.tasks = tasks;
-    saveLocalStorage("tasks", tasks);
+    saveLocalStorage("Tasks", tasks);
   },
   addTask(task) {
     this.tasks.push(task);
