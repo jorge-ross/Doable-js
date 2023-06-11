@@ -8,9 +8,11 @@ function renderTask(task) {
   return `<div class="show-task flex gap-4 ${
     task.completed ? "checked" : ""
   }" id="task-${task.id}">
+  <div class="check-g">
   <input type="checkbox" name="Task" id="${
     task.id
   }"class="checkbox checkbox__input check" ${task.completed ? "checked" : ""} >
+  </div>
   <div class="full-width">
     <div class="flex gap-4 justify-between">
       <p class="w-600">${task.title}</p>  
@@ -41,7 +43,7 @@ function render() {
             <div class=" flex gap-8">
                 <p class="content-sm w-500">Sort</p>
                 <select name="sort" id="sort" class="select select__input">
-                <option value="Option">Select Option</option>
+                <option value='' selected disabled hidden>Select Option</option>
                     <option value="Alphabetical">Alphabetical (a-z)</option>
                     <option value="Date">Due date</option>
                     <option value="Importance">Importance</option>
@@ -73,11 +75,11 @@ function render() {
               </div>      
             </div>
         </section>
-        <section class="all-tasks">
+        <section>
           ${tasks.map(renderTask).join("")}
         </section>
     </div>
-      <form class="full-width container-sm flex flex-column gap-4 task-form">
+      <form class="full-width container-sm container-add flex flex-column gap-4 task-form">
       ${input({
         id: "title",
         required: true,

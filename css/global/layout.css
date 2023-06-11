@@ -33,3 +33,7 @@
   max-width: 1280px;
   margin: auto;
 }
+
+.container-add {
+  padding-top: 1.5rem;
+}
