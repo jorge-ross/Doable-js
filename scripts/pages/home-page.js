@@ -13,17 +13,20 @@ function renderTask(task) {
   }"class="checkbox checkbox__input check" ${task.completed ? "checked" : ""} >
   <div class="full-width">
     <div class="flex gap-4 justify-between">
-      <p>${task.title}</p>  
+      <p class="w-600">${task.title}</p>  
       <i class="ri-error-warning-fill ri-lg" style="line-height: 1.3rem;"hidden></i>        
-      <i class="importance ri:error-warning-fill ri-lg" style="line-height: 1.3rem; color: ${
+      <i class="importance ri-error-warning-fill ri-lg" style="line-height: 1.3rem; color: ${
         task.important ? (task.completed ? "#F9A8D4" : "#EC4899") : "#D1D5DB"
       }" id="${task.id}"></i>
       </div>
-      <p class="content-sm">${new Date(task.due_date).toLocaleString("en-US", {
-        weekday: "long",
-        month: "long",
-        day: "numeric",
-      })}</p>
+      <p class="task-content w-400">${new Date(task.due_date).toLocaleString(
+        "en-US",
+        {
+          weekday: "long",
+          month: "long",
+          day: "numeric",
+        }
+      )}</p>
   </div>
 </div>`;
 }
@@ -83,7 +86,7 @@ function render() {
       })}
       ${input({
         id: "due_date",
-        required: true,
+        required: false,
         type: "date",
         placeholder: "dd/mm/yy",
       })}
