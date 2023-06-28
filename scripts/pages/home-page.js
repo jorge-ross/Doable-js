@@ -17,19 +17,20 @@ function renderTask(task) {
   <div class="full-width">
     <div class="flex gap-4 justify-between">
       <p class="w-600">${task.title}</p>  
-      <i class="ri-error-warning-fill ri-lg" style="line-height: 1.3rem;"hidden></i>        
+              
       <i class="importance ri-error-warning-fill ri-lg" style="line-height: 1.3rem; color: ${
         task.important ? (task.completed ? "#F9A8D4" : "#EC4899") : "#D1D5DB"
       }" id="${task.id}"></i>
       </div>
-      <p class="task-content w-400">${new Date(task.due_date).toLocaleString(
-        "en-US",
-        {
-          weekday: "long",
-          month: "long",
-          day: "numeric",
-        }
-      )}</p>
+      <p class="task-content w-400">${
+        task.due_date
+          ? new Date(task.due_date).toLocaleString("en-US", {
+              weekday: "long",
+              month: "long",
+              day: "numeric",
+            })
+          : ""
+      }</p>
   </div>
 </div>`;
 }
