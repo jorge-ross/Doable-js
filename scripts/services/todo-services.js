@@ -20,10 +20,7 @@ export async function deleteTask(id) {
   return await apiFetch(`tasks/${id}`, { method: "DELETE" });
 }
 
-export async function editTask(
-  data = { title, due_date, important, completed },
-  id
-) {
+export async function editTask(data, id) {
   return await apiFetch(`tasks/${id}`, {
     method: "PATCH",
     body: data,

@@ -57,16 +57,13 @@ function render() {
               </div>
               <div class="flex-spi">
               <div class="flex gap-2 w-500">
-                <input class="checkbox checkbox__input checkbox--optionList" type="checkbox" name="Incompleted" id="Incompleted" ${
-                  STORE.currentPage === "Incompleted" ||
-                  STORE.currentPage === "Important/Incompleted"
-                    ? "checked"
-                    : ""
+                <input class="checkbox checkbox__input check--pending" type="checkbox" name="Incompleted" id="Incompleted" ${
+                  STORE.pending ? "checked" : ""
                 } >
                 <label>Only pending</label>
                 </div>  
                 <div class="flex gap-2 w-500">
-                <input class="checkbox checkbox__input checkbox--optionList" type="checkbox" name="Important" id="Important" ${
+                <input class="checkbox checkbox__input check--important" type="checkbox" name="Important" id="Important" ${
                   STORE.currentPage === "Important" ||
                   STORE.currentPage === "Important/Incompleted"
                     ? "checked"
@@ -106,71 +103,60 @@ function listenCheck() {
       const taskDone = event.target.closest(`#task-${task.id}`);
       if (!taskDone) return;
       if (task.checked) {
-        taskDone.classList.add("checked");
-        editTask({ completed: true }, task.id);
+        const upTask = await editTask({ completed: true }, task.id);
+        STORE.updateTask(upTask);
+        DOMHandler.reload();
+        // console.log(updatedTask);
       } else {
-        taskDone.classList.remove("checked");
-        editTask({ completed: false }, task.id);
+        const upTask = await editTask({ completed: false }, task.id);
+        STORE.updateTask(upTask);
+        DOMHandler.reload();
+        // console.log(updatedTask);
       }
     });
   });
 }
 
-function listenChecklist() {
-  const listencheck = document.querySelectorAll(".checkbox--optionList");
-
-  listencheck.forEach((task) => {
-    task.addEventListener("change", async (event) => {
-      event.target.setAttribute("checked", "");
-      const option = event.target.id;
-      let newCurrentpage, newTask;
-      if (task.checked) {
-        switch (option) {
-          case "Important":
-            newTask = STORE.tasks.filter((task) => task.important === true);
-            STORE.setTasks(newTask);
-            newCurrentpage =
-              STORE.currentPage === "Incompleted"
-                ? "Important/Incompleted"
-                : "Important";
-            break;
-
-          case "Incompleted":
-            newTask = STORE.tasks.filter((task) => task.completed === false);
-            STORE.setTasks(newTask);
-            newCurrentpage =
-              STORE.currentPage === "Important"
-                ? "Important/Incompleted"
-                : "Incompleted";
-            break;
-        }
-        STORE.setCurrentPage(newCurrentpage);
-        DOMHandler.reload();
-      } else {
-        switch (option) {
-          case "Important":
-            newCurrentpage =
-              STORE.currentPage === "Important/Incompleted"
-                ? "Incompleted"
-                : "Homepage";
-            break;
-
-          case "Incompleted":
-            newCurrentpage =
-              STORE.currentPage === "Important/Incompleted"
-                ? "Important"
-                : "Homepage";
-            break;
-
-          default:
-            break;
-        }
-        STORE.setCurrentPage(newCurrentpage);
-        await STORE.listTasks();
-        DOMHandler.reload();
-      }
-    });
+function listenPending() {
+  const listenCheck = document.querySelector(".check--pending");
+  listenCheck.addEventListener("change", function () {
+    STORE.setPending();
+    const pendingTasks = STORE.tasks.filter((task) => task.completed === false);
+    console.log(pendingTasks);
+    DOMHandler.reload();
   });
+
+  //         case "Incompleted":
+  //           newTask = STORE.tasks.filter((task) => task.completed === false);
+  //           STORE.setTasks(newTask);
+  //       }
+  //       STORE.setCurrentPage(newCurrentpage);
+  //       DOMHandler.reload();
+  //     } else {
+  //       switch (option) {
+  //         case "Important":
+  //           newCurrentpage =
+  //             STORE.currentPage === "Important/Incompleted"
+  //               ? "Incompleted"
+  //               : "Homepage";
+  //           break;
+
+  //         case "Incompleted":
+  //           newCurrentpage =
+  //             STORE.currentPage === "Important/Incompleted"
+  //               ? "Important"
+  //               : "Homepage";
+  //           break;
+
+  //         default:
+  //           break;
+  //       }
+  //       STORE.setCurrentPage(newCurrentpage);
+  //       await STORE.listTasks();
+  //       DOMHandler.reload();
+  //     }
+  //   });
+  // });
 }
 
 function listenSort() {
@@ -264,9 +250,9 @@ function HomePage() {
     addListeners() {
       listenSubmit();
       listenCheck();
-      listenChecklist();
       listenImportant();
       listenSort();
+      listenPending();
       renderHeader().addListeners();
     },
   };

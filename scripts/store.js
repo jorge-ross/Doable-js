@@ -33,8 +33,17 @@ const STORE = {
   currentPage: fromLocalStorage("current-page") || "login",
   user: null,
   tasks: [],
+  pending: false,
   setUser(data) {
     this.user = data;
+  },
+  setPending() {
+    this.pending = !this.pending;
+  },
+  updateTask(task) {
+    const index = this.tasks.findIndex((element) => element.id === task.id);
+    if (index === -1) return;
+    this.tasks[index] = task;
   },
   setCurrentPage(page) {
     saveLocalStorage("current-page", page);
