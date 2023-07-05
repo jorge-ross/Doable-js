@@ -7,7 +7,7 @@ import { createTask, editTask, getTasks } from "../services/todo-services.js";
 function renderTask(task) {
   return `
   <div class="show-task flex gap-4 ${
-    task.completed ? "checked" : ""
+    task.important ? "important" : ""
   }" id="task-${task.id}">
   <div class="check-g">
   <input type="checkbox" name="Task" id="${
@@ -117,6 +117,27 @@ function listenCheck() {
   });
 }
 
+function listenIcon() {
+  const listChecked = document.querySelectorAll(".importance");
+
+  listChecked.forEach((task) => {
+    task.addEventListener("click", async (event) => {
+      const importantTask = event.target.closest(`#task-${task.id}`);
+      const hasClass = importantTask.classList.contains("important");
+      if (!importantTask) return;
+      if (!hasClass) {
+        const impTask = await editTask({ important: true }, task.id);
+        STORE.updateTask(impTask);
+        DOMHandler.reload();
+      } else {
+        const impTask = await editTask({ important: false }, task.id);
+        STORE.updateTask(impTask);
+        DOMHandler.reload();
+      }
+    });
+  });
+}
+
 function listenPending() {
   const listenCheck = document.querySelector(".check--pending");
   listenCheck.addEventListener("change", function () {
@@ -125,38 +146,6 @@ function listenPending() {
     console.log(pendingTasks);
     DOMHandler.reload();
   });
-
-  //         case "Incompleted":
-  //           newTask = STORE.tasks.filter((task) => task.completed === false);
-  //           STORE.setTasks(newTask);
-  //       }
-  //       STORE.setCurrentPage(newCurrentpage);
-  //       DOMHandler.reload();
-  //     } else {
-  //       switch (option) {
-  //         case "Important":
-  //           newCurrentpage =
-  //             STORE.currentPage === "Important/Incompleted"
-  //               ? "Incompleted"
-  //               : "Homepage";
-  //           break;
-
-  //         case "Incompleted":
-  //           newCurrentpage =
-  //             STORE.currentPage === "Important/Incompleted"
-  //               ? "Important"
-  //               : "Homepage";
-  //           break;
-
-  //         default:
-  //           break;
-  //       }
-  //       STORE.setCurrentPage(newCurrentpage);
-  //       await STORE.listTasks();
-  //       DOMHandler.reload();
-  //     }
-  //   });
-  // });
 }
 
 function listenSort() {
@@ -253,6 +242,7 @@ function HomePage() {
       listenImportant();
       listenSort();
       listenPending();
+      listenIcon();
       renderHeader().addListeners();
     },
   };
