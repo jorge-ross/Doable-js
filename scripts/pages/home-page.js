@@ -105,11 +105,23 @@ function listenCheck() {
       if (task.checked) {
         const upTask = await editTask({ completed: true }, task.id);
         STORE.updateTask(upTask);
+        if (STORE.pending) {
+          const pendingTasks = STORE.allTasks.filter(
+            (task) => task.completed === false
+          );
+          STORE.setFilterTasks(pendingTasks);
+        }
         DOMHandler.reload();
         // console.log(updatedTask);
       } else {
         const upTask = await editTask({ completed: false }, task.id);
         STORE.updateTask(upTask);
+        if (STORE.pending) {
+          const pendingTasks = STORE.allTasks.filter(
+            (task) => task.completed === false
+          );
+          STORE.setFilterTasks(pendingTasks);
+        }
         DOMHandler.reload();
         // console.log(updatedTask);
       }
@@ -142,56 +154,59 @@ function listenPending() {
   const listenCheck = document.querySelector(".check--pending");
   listenCheck.addEventListener("change", function () {
     STORE.setPending();
-    const pendingTasks = STORE.tasks.filter((task) => task.completed === false);
-    console.log(pendingTasks);
-    DOMHandler.reload();
+
+    if (listenCheck.checked) {
+      const pendingTasks = STORE.allTasks.filter(
+        (task) => task.completed === false
+      );
+      STORE.setFilterTasks(pendingTasks);
+
+      DOMHandler.reload();
+    } else {
+      STORE.setFilterTasks(STORE.allTasks);
+      DOMHandler.reload();
+    }
+
+    // console.log(pendingTasks);
   });
 }
 
 function listenSort() {
-  const select = document.querySelector(".select");
-  select.addEventListener("change", function (event) {
-    const option = event.target.value;
-    let data = STORE.tasks;
-    let sortTask;
-    switch (option) {
-      case "Alphabetical":
-        sortTask = data.sort(function (a, b) {
-          if (a.title < b.title) return -1;
-
-          if (a.title > b.title) return 1;
-
-          return 0;
-        });
-        STORE.setTasks(sortTask);
-        DOMHandler.reload();
-        break;
-
-      case "Date":
-        sortTask = data.sort(function (a, b) {
-          if (a.due_date < b.due_date) return 1;
-
-          if (a.due_date > b.due_date) return -1;
-
-          return 0;
-        });
-        STORE.setTasks(sortTask);
-        DOMHandler.reload();
-        break;
-
-      case "Importance":
-        sortTask = data.sort(function (a, b) {
-          if (a.important > b.important) return -1;
-
-          if (a.important < b.important) return 1;
-
-          return 0;
-        });
-        STORE.setTasks(sortTask);
-        DOMHandler.reload();
-        break;
-    }
-  });
+  // const select = document.querySelector(".select");
+  // select.addEventListener("change", function (event) {
+  //   const option = event.target.value;
+  //   let data = STORE.tasks;
+  //   let sortTask;
+  //   switch (option) {
+  //     case "Alphabetical":
+  //       sortTask = data.sort(function (a, b) {
+  //         if (a.title < b.title) return -1;
+  //         if (a.title > b.title) return 1;
+  //         return 0;
+  //       });
+  //       STORE.setTasks(sortTask);
+  //       DOMHandler.reload();
+  //       break;
+  //     case "Date":
+  //       sortTask = data.sort(function (a, b) {
+  //         if (a.due_date < b.due_date) return 1;
+  //         if (a.due_date > b.due_date) return -1;
+  //         return 0;
+  //       });
+  //       STORE.setTasks(sortTask);
+  //       DOMHandler.reload();
+  //       break;
+  //     case "Importance":
+  //       sortTask = data.sort(function (a, b) {
+  //         if (a.important > b.important) return -1;
+  //         if (a.important < b.important) return 1;
+  //         return 0;
+  //       });
+  //       STORE.setTasks(sortTask);
+  //       DOMHandler.reload();
+  //       break;
+  //   }
+  // });
 }
 
 function listenSubmit() {

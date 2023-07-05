@@ -5,21 +5,25 @@ import { tokenKey, root, appKey } from "./config.js";
 import STORE from "./store.js";
 
 async function App() {
-  let module;
-  try {
-    const token = sessionStorage.getItem(tokenKey);
-    if (!token) throw new Error();
-    module = HomePage;
+  const token = sessionStorage.getItem(tokenKey);
 
-    await STORE.listTasks();
+  let module;
+
+  if (!token) {
+    module = LoginPage;
+    return DOMHandler.load(module(), root);
+  }
+
+  try {
+    let tasks = await getTasks();
+    STORE.setTasks(tasks);
+    module = HomePage;
   } catch (error) {
     sessionStorage.removeItem(tokenKey);
-    localStorage.removeItem("Task");
-    localStorage.removeItem(appKey);
     module = LoginPage;
   }
 
-  DOMHandler.load(module(), root);
+  return DOMHandler.load(module(), root);
 }
 
 export default App;
