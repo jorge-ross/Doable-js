@@ -58,18 +58,20 @@ function listenSubmit() {
       password: password.value,
     };
 
+    let user;
     try {
-      await login(credentials);
-      STORE.setCurrentPage("Homepage");
-
-      let tasks = await getTasks();
-      STORE.setTasks(tasks);
-
-      DOMHandler.load(HomePage(), root);
+      user = await login(credentials);
     } catch (error) {
-      this.state.errors.form = error.message;
-      DOMHandler.reload();
+      throw new Error(response.statusText);
+      // this.state.errors.form = error.message;
+      // DOMHandler.reload();
     }
+    STORE.setUser(user);
+    STORE.setCurrentPage("home");
+
+    let tasks = await getTasks();
+    STORE.setTasks(tasks);
+    DOMHandler.load(HomePage(), root);
   });
 }
 

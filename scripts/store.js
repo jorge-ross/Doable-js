@@ -1,33 +1,16 @@
-import { fromLocalStorage, saveLocalStorage } from "./utils.js";
 import { getTasks } from "./services/todo-services.js";
+import { fromLocalStorage, saveLocalStorage } from "./utils.js";
 
-// async function listTasks(option = null) {
-//   let currentpage = option || STORE.currentPage;
-//   let tasks = await getTasks();
-//   let newTask;
+async function listTasks(option = null) {
+  let current = option || STORE.currentPage;
+  let tasks = await getTasks();
 
-//   switch (currentpage) {
-//     case "Important":
-//       newTask = tasks.filter((task) => task.important === true);
-//       STORE.setTasks(newTask);
-//       break;
-
-//     case "Incompleted":
-//       newTask = tasks.filter((task) => task.completed === false);
-//       STORE.setTasks(newTask);
-//       break;
-
-//     case "Important/Incompleted":
-//       newTask = tasks.filter((task) => task.completed === false);
-//       let newTask2 = newTask.filter((task) => task.important === true);
-//       STORE.setTasks(newTask2);
-//       break;
-
-// case "Homepage":
-//   STORE.setTasks(tasks);
-//   break;
-//   }
-// }
+  switch (current) {
+    case "home":
+      STORE.setTasks(tasks);
+      break;
+  }
+}
 
 const STORE = {
   currentPage: fromLocalStorage("current-page") || "login",
@@ -40,6 +23,7 @@ const STORE = {
   },
   setUser(data) {
     this.user = data;
+    saveLocalStorage("user", data);
   },
   setPending() {
     this.pending = !this.pending;
@@ -66,5 +50,6 @@ const STORE = {
   deleteTask(id) {
     this.tasks = this.tasks.filter((task) => task.id !== id);
   },
+  listTasks,
 };
 export default STORE;

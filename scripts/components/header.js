@@ -9,11 +9,13 @@ function render() {
     <header class="header" style="${
       STORE.currentPage === "Homepage" ? "" : "justify-content: center"
     }">
-    <div></div>
+    
       <img src="./assets/images/doable-logo.png">
+      <div class="logoutIcon">
       <img class="logout" src="./assets/icons/logout.svg" style=" ${
-        STORE.currentPage === "Homepage" ? "" : "display: none"
+        STORE.currentPage === "home" ? "" : "display: none"
       }">
+      </div>
     </header>
 `;
 }

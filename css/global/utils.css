@@ -177,3 +177,12 @@
   place-items: top;
   display: grid;
 }
+
+.logoutIcon{
+  display: flex;
+  position: absolute;
+  right: 0;
+  padding-right: 1rem;
+  place-items: center;
+  cursor: pointer;
+}

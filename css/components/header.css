@@ -1,6 +1,6 @@
 .header {
   display: flex;
   padding: .75rem;
-  justify-content: space-between;
   background-color: var(--gray-200);
+  place-items: center;
 }
