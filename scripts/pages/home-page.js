@@ -3,6 +3,7 @@ import DOMHandler from "../dom-handler.js";
 import { input } from "../components/input.js";
 import { renderHeader } from "../components/header.js";
 import { createTask, editTask, getTasks } from "../services/todo-services.js";
+import { Filtering } from "../utils.js";
 
 function renderTask(task) {
   return `
@@ -58,16 +59,13 @@ function render() {
               <div class="flex-spi">
               <div class="flex gap-2 w-500">
                 <input class="checkbox checkbox__input check--pending" type="checkbox" name="Incompleted" id="Incompleted" ${
-                  STORE.pending ? "checked" : ""
+                  STORE.filter.pending ? "checked" : ""
                 } >
                 <label>Only pending</label>
                 </div>  
                 <div class="flex gap-2 w-500">
                 <input class="checkbox checkbox__input check--important" type="checkbox" name="Important" id="Important" ${
-                  STORE.currentPage === "Important" ||
-                  STORE.currentPage === "Important/Incompleted"
-                    ? "checked"
-                    : ""
+                  STORE.filter.important ? "click" : ""
                 } >
                 <label class="content-sm w-500" for="Important">Only Important</label>
                 </div>  
@@ -101,27 +99,19 @@ function listenCheck() {
   listChecked.forEach((task) => {
     task.addEventListener("change", async (event) => {
       const taskDone = event.target.closest(`#task-${task.id}`);
+
       if (!taskDone) return;
+
       if (task.checked) {
         const upTask = await editTask({ completed: true }, task.id);
         STORE.updateTask(upTask);
-        if (STORE.pending) {
-          const pendingTasks = STORE.allTasks.filter(
-            (task) => task.completed === false
-          );
-          STORE.setFilterTasks(pendingTasks);
-        }
+        Filtering(STORE.filteredTasks);
         DOMHandler.reload();
-        // console.log(updatedTask);
+        // console.log(taskDone);
       } else {
         const upTask = await editTask({ completed: false }, task.id);
         STORE.updateTask(upTask);
-        if (STORE.pending) {
-          const pendingTasks = STORE.allTasks.filter(
-            (task) => task.completed === false
-          );
-          STORE.setFilterTasks(pendingTasks);
-        }
+        Filtering(STORE.filteredTasks);
         DOMHandler.reload();
         // console.log(updatedTask);
       }
@@ -153,20 +143,9 @@ function listenIcon() {
 function listenPending() {
   const listenCheck = document.querySelector(".check--pending");
   listenCheck.addEventListener("change", function () {
-    STORE.setPending();
-
-    if (listenCheck.checked) {
-      const pendingTasks = STORE.allTasks.filter(
-        (task) => task.completed === false
-      );
-      STORE.setFilterTasks(pendingTasks);
-
-      DOMHandler.reload();
-    } else {
-      STORE.setFilterTasks(STORE.allTasks);
-      DOMHandler.reload();
-    }
-
+    STORE.setFilter("pending");
+    Filtering(STORE.filteredTasks);
+    DOMHandler.reload();
     // console.log(pendingTasks);
   });
 }

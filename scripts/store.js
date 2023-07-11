@@ -16,7 +16,7 @@ const STORE = {
   currentPage: fromLocalStorage("current-page") || "login",
   user: null,
   tasks: [],
-  allTasks: [],
+  filteredTasks: [],
   filter: {
     pending: false,
     important: false,
@@ -25,27 +25,27 @@ const STORE = {
     this.user = data;
     saveLocalStorage("user", data);
   },
-  setPending() {
-    this.pending = !this.pending;
+  setFilter(type) {
+    this.filter[type] = !this.filter[type];
   },
-  updateTask(task) {
-    const index = this.allTasks.findIndex((element) => element.id === task.id);
-    if (index === -1) return;
-    this.allTasks[index] = task;
+  updateTask(updatedTask) {
+    this.filteredTasks = this.filteredTasks.map((task) =>
+      task.id === updatedTask.id ? updatedTask : task
+    );
   },
   setCurrentPage(page) {
     saveLocalStorage("current-page", page);
     this.currentPage = page;
   },
   setTasks(tasks) {
-    this.allTasks = tasks;
+    this.tasks = tasks;
     saveLocalStorage("Tasks", tasks);
   },
   setFilterTasks(tasks) {
     this.tasks = tasks;
   },
   addTask(task) {
-    this.tasks.push(task);
+    this.filteredTasks.push(task);
   },
   deleteTask(id) {
     this.tasks = this.tasks.filter((task) => task.id !== id);
