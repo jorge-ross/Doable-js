@@ -120,20 +120,25 @@ function listenCheck() {
 }
 
 function listenIcon() {
-  const listChecked = document.querySelectorAll(".importance");
+  const listImportant = document.querySelectorAll(".importance");
 
-  listChecked.forEach((task) => {
+  listImportant.forEach((task) => {
     task.addEventListener("click", async (event) => {
       const importantTask = event.target.closest(`#task-${task.id}`);
       const hasClass = importantTask.classList.contains("important");
+      // console.log(importantTask);
+
       if (!importantTask) return;
-      if (!hasClass) {
-        const impTask = await editTask({ important: true }, task.id);
-        STORE.updateTask(impTask);
+
+      if (hasClass) {
+        const upTask = await editTask({ important: true }, task.id);
+        STORE.updateTask(upTask);
+        Filtering(STORE.filteredTasks);
         DOMHandler.reload();
       } else {
         const impTask = await editTask({ important: false }, task.id);
         STORE.updateTask(impTask);
+        Filtering(STORE.filteredTasks);
         DOMHandler.reload();
       }
     });
@@ -147,6 +152,15 @@ function listenPending() {
     Filtering(STORE.filteredTasks);
     DOMHandler.reload();
     // console.log(pendingTasks);
+  });
+}
+
+function listenImportant() {
+  const listenIcon = document.querySelector(".check--important");
+  listenIcon.addEventListener("click", function () {
+    STORE.setFilter("important");
+    Filtering(STORE.filteredTasks);
+    DOMHandler.reload();
   });
 }
 
@@ -200,28 +214,6 @@ function listenSubmit() {
     const newTask = await createTask(taskData);
     STORE.addTask(newTask);
     DOMHandler.reload();
-  });
-}
-
-function listenImportant() {
-  const importanceIcon = document.querySelectorAll(".importance");
-
-  importanceIcon.forEach((icon) => {
-    icon.addEventListener("click", () => {
-      const task = STORE.tasks.find((task) => task.id == icon.id);
-      if (!task) return;
-
-      if (task.important) {
-        task.important = false;
-        editTask({ important: false }, task.id);
-      } else {
-        task.important = true;
-        editTask({ important: true }, task.id);
-      }
-      STORE.deleteTask(task.id);
-      STORE.addTask(task);
-      DOMHandler.reload();
-    });
   });
 }
 

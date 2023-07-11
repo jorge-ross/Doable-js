@@ -28,9 +28,9 @@ const STORE = {
   setFilter(type) {
     this.filter[type] = !this.filter[type];
   },
-  updateTask(updatedTask) {
+  updateTask(upTask) {
     this.filteredTasks = this.filteredTasks.map((task) =>
-      task.id === updatedTask.id ? updatedTask : task
+      task.id === upTask.id ? upTask : task
     );
   },
   setCurrentPage(page) {
@@ -38,7 +38,7 @@ const STORE = {
     this.currentPage = page;
   },
   setTasks(tasks) {
-    this.tasks = tasks;
+    this.filteredTasks = tasks;
     saveLocalStorage("Tasks", tasks);
   },
   setFilterTasks(tasks) {
