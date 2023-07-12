@@ -60,10 +60,11 @@ function listenSubmit() {
 
     try {
       const token = await createUser(credentials);
-      STORE.setCurrentPage("Homepage");
+      STORE.setCurrentPage("home");
 
       const tasks = await getTasks();
       STORE.setTasks(tasks);
+      STORE.setFilterTasks(tasks);
 
       DOMHandler.load(HomePage(), root);
     } catch (error) {
