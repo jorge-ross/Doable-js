@@ -71,6 +71,7 @@ function listenSubmit() {
 
     let tasks = await getTasks();
     STORE.setTasks(tasks);
+    STORE.setFilterTasks(tasks);
     DOMHandler.load(HomePage(), root);
   });
 }

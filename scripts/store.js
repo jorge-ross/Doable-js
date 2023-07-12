@@ -8,6 +8,7 @@ async function listTasks(option = null) {
   switch (current) {
     case "home":
       STORE.setTasks(tasks);
+      STORE.setFilterTasks(tasks);
       break;
   }
 }

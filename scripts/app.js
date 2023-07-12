@@ -3,6 +3,7 @@ import LoginPage from "./pages/login-page.js";
 import HomePage from "./pages/home-page.js";
 import { tokenKey, root } from "./config.js";
 import STORE from "./store.js";
+// import SignupPage from "./pages/sign-up-page.js";
 
 let module;
 async function App() {

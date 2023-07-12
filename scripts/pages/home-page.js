@@ -65,7 +65,7 @@ function render() {
                 </div>  
                 <div class="flex gap-2 w-500">
                 <input class="checkbox checkbox__input check--important" type="checkbox" name="Important" id="Important" ${
-                  STORE.filter.important ? "click" : ""
+                  STORE.filter.important ? "checked" : ""
                 } >
                 <label class="content-sm w-500" for="Important">Only Important</label>
                 </div>  
@@ -130,7 +130,7 @@ function listenIcon() {
 
       if (!importantTask) return;
 
-      if (hasClass) {
+      if (!hasClass) {
         const upTask = await editTask({ important: true }, task.id);
         STORE.updateTask(upTask);
         Filtering(STORE.filteredTasks);
@@ -157,7 +157,7 @@ function listenPending() {
 
 function listenImportant() {
   const listenIcon = document.querySelector(".check--important");
-  listenIcon.addEventListener("click", function () {
+  listenIcon.addEventListener("change", function () {
     STORE.setFilter("important");
     Filtering(STORE.filteredTasks);
     DOMHandler.reload();
