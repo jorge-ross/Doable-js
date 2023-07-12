@@ -3,7 +3,7 @@ import DOMHandler from "../dom-handler.js";
 import { input } from "../components/input.js";
 import { renderHeader } from "../components/header.js";
 import { createTask, editTask, getTasks } from "../services/todo-services.js";
-import { Filtering } from "../utils.js";
+import { Filtering, SortedTasks } from "../utils.js";
 
 function renderTask(task) {
   return `
@@ -45,7 +45,7 @@ function render() {
         <section class="flex flex-column gap-4">
             <div class=" flex gap-8">
                 <p class="content-sm w-500">Sort</p>
-                <select name="sort" id="sort" class="select select__input">
+                <select name="sort" id="sort" class="js-select select select__input">
                 <option value='' selected disabled hidden>Select Option</option>
                     <option value="Alphabetical">Alphabetical (a-z)</option>
                     <option value="Date">Due date</option>
@@ -165,42 +165,45 @@ function listenImportant() {
 }
 
 function listenSort() {
-  // const select = document.querySelector(".select");
-  // select.addEventListener("change", function (event) {
-  //   const option = event.target.value;
-  //   let data = STORE.tasks;
-  //   let sortTask;
-  //   switch (option) {
-  //     case "Alphabetical":
-  //       sortTask = data.sort(function (a, b) {
-  //         if (a.title < b.title) return -1;
-  //         if (a.title > b.title) return 1;
-  //         return 0;
-  //       });
-  //       STORE.setTasks(sortTask);
-  //       DOMHandler.reload();
-  //       break;
-  //     case "Date":
-  //       sortTask = data.sort(function (a, b) {
-  //         if (a.due_date < b.due_date) return 1;
-  //         if (a.due_date > b.due_date) return -1;
-  //         return 0;
-  //       });
-  //       STORE.setTasks(sortTask);
-  //       DOMHandler.reload();
-  //       break;
-  //     case "Importance":
-  //       sortTask = data.sort(function (a, b) {
-  //         if (a.important > b.important) return -1;
-  //         if (a.important < b.important) return 1;
-  //         return 0;
-  //       });
-  //       STORE.setTasks(sortTask);
-  //       DOMHandler.reload();
-  //       break;
-  //   }
-  // });
+  const select = document.querySelector(".js-select");
+  select.addEventListener("change", function (event) {
+    const option = event.target.value;
+    STORE.setSort(option);
+    SortedTasks();
+  });
 }
+//
+//
+//   switch (option) {
+//     case "Alphabetical":
+//       sortTask = data.sort(function (a, b) {
+//         if (a.title < b.title) return -1;
+//         if (a.title > b.title) return 1;
+//         return 0;
+//       });
+//       STORE.setTasks(sortTask);
+//       DOMHandler.reload();
+//       break;
+//     case "Date":
+//       sortTask = data.sort(function (a, b) {
+//         if (a.due_date < b.due_date) return 1;
+//         if (a.due_date > b.due_date) return -1;
+//         return 0;
+//       });
+//       STORE.setTasks(sortTask);
+//       DOMHandler.reload();
+//       break;
+//     case "Importance":
+//       sortTask = data.sort(function (a, b) {
+//         if (a.important > b.important) return -1;
+//         if (a.important < b.important) return 1;
+//         return 0;
+//       });
+//       STORE.setTasks(sortTask);
+//       DOMHandler.reload();
+//       break;
+//   }
+// });
 
 function listenSubmit() {
   const form = document.querySelector(".task-form");

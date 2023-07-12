@@ -25,3 +25,22 @@ export function Filtering(tasks) {
   const filterTasks = filterList(tasks);
   STORE.setFilterTasks(filterTasks);
 }
+
+export function SortedTasks() {
+  // console.log(STORE.tasks);
+  let data = STORE.filteredTasks;
+  let sortTask;
+  switch (STORE.sort) {
+    case "Alphabetical":
+      break;
+    case "Date":
+      break;
+    case "Importance":
+      break;
+
+    default:
+      sortTask = data;
+      break;
+  }
+  return sortTask;
+}

@@ -6,9 +6,7 @@ import { root } from "../config.js";
 
 function render() {
   return `
-    <header class="header" style="${
-      STORE.currentPage === "Homepage" ? "" : "justify-content: center"
-    }">
+    <header class="header">
     
       <img src="./assets/images/doable-logo.png">
       <div class="logoutIcon">
@@ -26,6 +24,7 @@ function listenLogout() {
   logoutIcon.addEventListener("click", async (event) => {
     event.preventDefault();
     await logout();
+    STORE.setCurrentPage("login");
     DOMHandler.load(LoginPage(), root);
   });
 }

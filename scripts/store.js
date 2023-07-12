@@ -18,6 +18,7 @@ const STORE = {
   user: null,
   tasks: [],
   filteredTasks: [],
+  sort: null,
   filter: {
     pending: false,
     important: false,
@@ -28,6 +29,9 @@ const STORE = {
   },
   setFilter(type) {
     this.filter[type] = !this.filter[type];
+  },
+  setSort(value) {
+    this.sort = value;
   },
   updateTask(upTask) {
     this.filteredTasks = this.filteredTasks.map((task) =>

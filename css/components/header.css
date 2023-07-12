@@ -2,5 +2,5 @@
   display: flex;
   padding: .75rem;
   background-color: var(--gray-200);
-  place-items: center;
+  justify-content: center;
 }
