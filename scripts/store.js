@@ -44,10 +44,9 @@ const STORE = {
   },
   setTasks(tasks) {
     this.filteredTasks = tasks;
-    saveLocalStorage("Tasks", tasks);
   },
-  setFilterTasks(tasks) {
-    this.tasks = tasks;
+  setFilterTasks(data) {
+    this.tasks = data;
   },
   addTask(task) {
     this.filteredTasks.push(task);

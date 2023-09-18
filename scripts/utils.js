@@ -21,26 +21,46 @@ export function filterList(allTasks) {
   );
 }
 
-export function Filtering(tasks) {
-  const filterTasks = filterList(tasks);
-  STORE.setFilterTasks(filterTasks);
-}
+export function sortTasks(allTasks) {
+  let sortedTask;
 
-export function SortedTasks() {
-  // console.log(STORE.tasks);
-  let data = STORE.filteredTasks;
-  let sortTask;
   switch (STORE.sort) {
     case "Alphabetical":
+      sortedTask = allTasks.sort((a, b) => a.title.localeCompare(b.title));
       break;
     case "Date":
+      sortedTask = allTasks.sort((a, b) => {
+        if (a.due_date === null && b.due_date === null) return 0;
+        if (a.due_date === null) return 1;
+        if (b.due_date === null) return -1;
+
+        const dateOne = new Date(a.due_date);
+        const dateTwo = new Date(b.due_date);
+
+        return dateOne - dateTwo;
+      });
       break;
     case "Importance":
+      sortedTask = allTasks.sort((a, b) => {
+        if (a.important && !b.important) {
+          return -1;
+        }
+        if (!a.important && b.important) {
+          return 1;
+        }
+        return 0;
+      });
       break;
 
     default:
-      sortTask = data;
+      sortedTask = allTasks;
       break;
   }
-  return sortTask;
+  return sortedTask;
+}
+
+export function Filtering(allTasks) {
+  const filterTasks = filterList(allTasks);
+  const sortedTasks = sortTasks(filterTasks);
+  STORE.setFilterTasks(sortedTasks);
 }

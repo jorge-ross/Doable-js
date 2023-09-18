@@ -2,8 +2,8 @@ import STORE from "../store.js";
 import DOMHandler from "../dom-handler.js";
 import { input } from "../components/input.js";
 import { renderHeader } from "../components/header.js";
-import { createTask, editTask, getTasks } from "../services/todo-services.js";
-import { Filtering, SortedTasks } from "../utils.js";
+import { createTask, editTask } from "../services/todo-services.js";
+import { Filtering } from "../utils.js";
 
 function renderTask(task) {
   return `
@@ -169,41 +169,11 @@ function listenSort() {
   select.addEventListener("change", function (event) {
     const option = event.target.value;
     STORE.setSort(option);
-    SortedTasks();
+    Filtering(STORE.filteredTasks);
+
+    DOMHandler.reload();
   });
 }
-//
-//
-//   switch (option) {
-//     case "Alphabetical":
-//       sortTask = data.sort(function (a, b) {
-//         if (a.title < b.title) return -1;
-//         if (a.title > b.title) return 1;
-//         return 0;
-//       });
-//       STORE.setTasks(sortTask);
-//       DOMHandler.reload();
-//       break;
-//     case "Date":
-//       sortTask = data.sort(function (a, b) {
-//         if (a.due_date < b.due_date) return 1;
-//         if (a.due_date > b.due_date) return -1;
-//         return 0;
-//       });
-//       STORE.setTasks(sortTask);
-//       DOMHandler.reload();
-//       break;
-//     case "Importance":
-//       sortTask = data.sort(function (a, b) {
-//         if (a.important > b.important) return -1;
-//         if (a.important < b.important) return 1;
-//         return 0;
-//       });
-//       STORE.setTasks(sortTask);
-//       DOMHandler.reload();
-//       break;
-//   }
-// });
 
 function listenSubmit() {
   const form = document.querySelector(".task-form");
